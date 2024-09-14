@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "title": "HR"
+    },
+    {
+        "id": 2,
+        "title": "UI Designer"
+    },
+    {
+        "id": 3,
+        "title": "Architect"
+    },
+    {
+        "id": 4,
+        "title": "Programmer Analyst"
+    },
+    {
+        "id": 5,
+        "title": "Cheif Legal Officer"
+    },
+    {
+        "id": 6,
+        "title": "Vice President"
+    },
+    {
+        "id": 7,
+        "title": "Cheif Marketing Officer"
+    },
+    {
+        "id": 8,
+        "title": "Programming Manager"
+    }
+]
