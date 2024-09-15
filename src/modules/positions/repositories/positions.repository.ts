@@ -23,11 +23,11 @@ export class PositionRepository extends Repository<Position> {
     async getAll(projectId: number, filter: FilterDto) {
         const positionQuery = this.positionRepository
             .createQueryBuilder('position')
-            .leftJoinAndSelect('position.departmentId', 'department')
-            .leftJoinAndSelect('position.designationId', 'designation')
-            .leftJoinAndSelect('position.locationId', 'location')
+            .leftJoinAndSelect('position.department', 'department')
+            .leftJoinAndSelect('position.designation', 'designation')
+            .leftJoinAndSelect('position.location', 'location')
             .leftJoinAndSelect('position.updatedBy', 'updatedBy')
-            .andWhere('position.projectId = :projectId', { projectId });
+            .andWhere('position.project = :projectId', { projectId });
 
         if (filter?.search) {
             positionQuery.andWhere('department.name ILIKE :search OR designation.title ILIKE :search', 

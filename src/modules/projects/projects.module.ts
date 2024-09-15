@@ -3,13 +3,13 @@ import { ProjectsService } from './projects.service';
 import { ProjectsController } from './projects.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Project } from './entities';
-import { ProjectRepository } from './repositories';
+import { ProjectsRepository } from './repositories';
 import { UsersModule } from '../users/users.module';
 
 @Module({
   controllers: [ProjectsController],
-  providers: [ProjectsService, ProjectRepository],
+  providers: [ProjectsService, ProjectsRepository],
   imports: [TypeOrmModule.forFeature([Project]), UsersModule],
-  exports: [ProjectsService, TypeOrmModule, ProjectRepository],
+  exports: [ProjectsService, TypeOrmModule, ProjectsRepository],
 })
 export class ProjectsModule {}

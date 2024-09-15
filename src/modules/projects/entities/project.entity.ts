@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "../../users/entities";
+import { Position } from "../../positions/entities";
 
 @Entity()
 export class Project {
@@ -12,6 +13,9 @@ export class Project {
     @Column({ nullable: true })
     description?: string;
 
+    @Column()
+    budget?: number;
+
     @ManyToOne(() => User)
     @JoinColumn({ name: 'adminId', referencedColumnName: 'id' })
     admin: User;
@@ -19,4 +23,7 @@ export class Project {
     @ManyToMany(() => User, user => user.projects)
     @JoinTable()
     users: User[];
+
+    @OneToMany(() => Position, position => position.project)
+    positions: Position[];
 }

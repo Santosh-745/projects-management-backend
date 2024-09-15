@@ -21,12 +21,6 @@ export class ProjectsController {
     return this.projectsService.findAll(query, +user?.sub);
   }
 
-  @Get(':id')
-  @UseGuards(AuthGuard)
-  findOne(@Param('id') id: string, @CurrentUser() user: ICurrentUser) {
-    return this.projectsService.findOne(+id, +user?.sub);
-  }
-
   @Delete(':id')
   @UseGuards(AuthGuard)
   remove(@Param('id') id: string, @CurrentUser() user: ICurrentUser) {

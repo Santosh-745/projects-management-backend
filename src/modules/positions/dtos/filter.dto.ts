@@ -1,16 +1,16 @@
-import { IsIn, IsInt, IsOptional } from "class-validator";
+import { IsIn, IsNumberString, IsOptional } from "class-validator";
 
 export class FilterDto {
     @IsOptional()
-    @IsInt()
+    @IsNumberString()
     page: number;
 
     @IsOptional()
-    @IsInt()
+    @IsNumberString()
     limit: number;
 
     @IsOptional()
-    @IsInt()
+    @IsNumberString()
     search: string;
     
     @IsOptional()
@@ -18,6 +18,6 @@ export class FilterDto {
     filterField: string;
     
     @IsOptional()
-    @IsInt()
+    @IsNumberString()
     filterValue: number;
 }

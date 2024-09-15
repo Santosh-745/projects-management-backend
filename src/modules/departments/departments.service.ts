@@ -9,4 +9,8 @@ export class DepartmentsService {
     async findAll() {
         return this.departmentsRepository.find();
     }
+
+    async getAllWithBudgetPercentage(projectId: number) {
+        return this.departmentsRepository.getAllWithBudgetPercentage(projectId);
+    }
 }

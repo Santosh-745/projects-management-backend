@@ -1,4 +1,4 @@
-import { IsArray, IsString } from "class-validator";
+import { IsArray, IsNumberString, IsString } from "class-validator";
 
 export class createProjectDto {
     @IsString()
@@ -9,4 +9,7 @@ export class createProjectDto {
     
     @IsArray()
     users: number[];
+
+    @IsNumberString()
+    budget: number;
 }

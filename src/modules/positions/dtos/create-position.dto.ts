@@ -16,4 +16,8 @@ export class CreatePositionDto {
     @IsNumber()
     @IsNotEmpty()
     locationId: number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    projectId: number;
 }

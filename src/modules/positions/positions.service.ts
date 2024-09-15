@@ -5,7 +5,7 @@ import { DepartmentsRepository } from '../departments/repositories';
 import { DesignationsRepository } from '../designations/repositories';
 import { LocationsRepository } from '../locations/repositories';
 import { UserRepository } from '../users/repositories';
-import { Position } from './entities';
+import { ProjectsRepository } from '../projects/repositories';
 
 @Injectable()
 export class PositionsService {
@@ -15,6 +15,7 @@ export class PositionsService {
     private readonly designationsRepository: DesignationsRepository,
     private readonly locationsRepository: LocationsRepository,
     private readonly usersRepository: UserRepository,
+    private readonly projectsRepository: ProjectsRepository,
   ) { }
   async create(createPositionDto: CreatePositionDto, userId: number) {
     const department = await this.departmentsRepository.get(createPositionDto.departmentId);
@@ -29,12 +30,24 @@ export class PositionsService {
     if (!location) {
       throw new NotFoundException('Locaiton not found');
     }
+    const [project] = await this.projectsRepository.findBy(
+      {
+        id: createPositionDto.projectId,
+        users: {
+          id: userId
+        }
+      }
+    )
+    if (!project) {
+      throw new NotFoundException('Locaiton not found');
+    }
     const user = await this.usersRepository.get(userId);
     const payload = {
+      project,
       budget: createPositionDto?.budget,
-      designationId: designation,
-      departmentId: department,
-      locationId: location,
+      designation,
+      department,
+      location,
       updatedAt: new Date(),
       updatedBy: user
     };
@@ -53,9 +66,9 @@ export class PositionsService {
     const positions = await this.positionRepository.getAll(projectId, query);
     return {
       positions: positions[0],
-      page: query.page,
-      length: positions[0].length,
-      total: positions[1],
+      page: +query.page,
+      length: +positions[0].length,
+      total: +positions[1],
       totalPages: Math.ceil(positions[1] / query.limit),
     }
   }

@@ -8,6 +8,7 @@ import { DesignationsModule } from '../designations/designations.module';
 import { DepartmentsModule } from '../departments/departments.module';
 import { LocationsModule } from '../locations/locations.module';
 import { UsersModule } from '../users/users.module';
+import { ProjectsModule } from '../projects/projects.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { UsersModule } from '../users/users.module';
     DesignationsModule,
     DepartmentsModule,
     LocationsModule,
-    UsersModule
+    UsersModule,
+    ProjectsModule
   ],
   controllers: [PositionsController],
   providers: [PositionsService, PositionRepository],

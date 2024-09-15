@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { PositionsService } from './positions.service';
 import { CreatePositionDto, FilterDto, ListPositionsResponseDto } from './dtos';
 import { AuthGuard } from '../../guards/auth.guard';

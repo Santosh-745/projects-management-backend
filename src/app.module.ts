@@ -10,19 +10,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { DepartmentsModule } from './modules/departments/departments.module';
 import { DesignationsModule } from './modules/designations/designations.module';
 import { LocationsModule } from './modules/locations/locations.module';
+import { ProjectsModule } from './modules/projects/projects.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    DatabaseModule,
-    UsersModule,
-    AuthModule,
-    PositionsModule,
-    DepartmentsModule,
-    DesignationsModule,
-    LocationsModule,
     JwtModule.registerAsync({
       global: true,
       imports: [ConfigModule],
@@ -33,7 +27,15 @@ import { LocationsModule } from './modules/locations/locations.module';
         }
       }),
       inject: [ConfigService]
-    })
+    }),
+    DatabaseModule,
+    UsersModule,
+    AuthModule,
+    PositionsModule,
+    DepartmentsModule,
+    DesignationsModule,
+    LocationsModule,
+    ProjectsModule
   ],
   controllers: [AppController],
   providers: [AppService],
