@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { PositionsService } from './positions.service';
-import { CreatePositionDto } from './dtos';
+import { CreatePositionDto, FilterDto, ListPositionsResponseDto } from './dtos';
 import { AuthGuard } from '../../guards/auth.guard';
 import { CurrentUser } from '../../decorators/current-user.decorator';
 import { ICurrentUser } from '../../shared/interfaces';
@@ -15,10 +15,10 @@ export class PositionsController {
         return this.positionService.create(createPositionDto, user?.sub);
     }
 
-    @Get()
+    @Get(":id")
     @UseGuards(AuthGuard)
-    findAll() {
-        return this.positionService.findAll();
+    findAll(@Param('id') id: string, @Query() query: FilterDto): Promise<ListPositionsResponseDto> {
+        return this.positionService.findAll(+id, query);
     }
 
     @Delete(':id')

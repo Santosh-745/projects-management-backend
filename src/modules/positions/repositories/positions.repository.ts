@@ -1,7 +1,7 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { Position } from "../entities";
-import { Repository } from "typeorm";
-import { CreatePositionDto } from "../dtos";
+import { ILike, Repository } from "typeorm";
+import { CreatePositionDto, FilterDto } from "../dtos";
 
 export class PositionRepository extends Repository<Position> {
     constructor(
@@ -20,10 +20,29 @@ export class PositionRepository extends Repository<Position> {
         return this.positionRepository.save(newPosition);
     }
 
-    async getAll() {
-        return this.positionRepository.find({
-            relations: ['departmentId', 'designationId', 'locationId', 'updatedBy'],
-        });
+    async getAll(projectId: number, filter: FilterDto) {
+        const positionQuery = this.positionRepository
+            .createQueryBuilder('position')
+            .leftJoinAndSelect('position.departmentId', 'department')
+            .leftJoinAndSelect('position.designationId', 'designation')
+            .leftJoinAndSelect('position.locationId', 'location')
+            .leftJoinAndSelect('position.updatedBy', 'updatedBy')
+            .andWhere('position.projectId = :projectId', { projectId });
+
+        if (filter?.search) {
+            positionQuery.andWhere('department.name ILIKE :search OR designation.title ILIKE :search', 
+                { search: `%${filter.search}%` }
+            );
+        }
+        if (filter?.filterField && filter?.filterValue) {
+            positionQuery.andWhere(`position.${filter.filterField} = :filterValue`, {
+                filterValue: `${filter.filterValue}`,
+            });
+        }
+        return positionQuery
+            .skip((filter.page - 1) * filter.limit)
+            .take(filter.limit)
+            .getManyAndCount();
     }
 
     async get(id: number) {

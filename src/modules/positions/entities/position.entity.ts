@@ -15,19 +15,19 @@ export class Position {
 
     @ManyToOne(() => Project)
     @JoinColumn({ name: 'projectId', referencedColumnName: 'id' })
-    projectId: Project;
+    project: Project;
 
     @ManyToOne(() => Designation)
     @JoinColumn({ name: 'designationId', referencedColumnName: 'id' })
-    designationId: Designation;
+    designation: Designation;
 
     @ManyToOne(() => Department)
     @JoinColumn({ name: 'departmentId', referencedColumnName: 'id' })
-    departmentId: Department;
+    department: Department;
 
     @ManyToOne(() => Location)
     @JoinColumn({ name: 'locationId', referencedColumnName: 'id' })
-    locationId: Location;
+    location: Location;
 
     @ManyToOne(() => User)
     @JoinColumn({ name: 'updatedBy', referencedColumnName: 'id' })

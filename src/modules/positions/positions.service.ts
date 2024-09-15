@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreatePositionDto } from './dtos';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { CreatePositionDto, FilterDto, ListPositionsResponseDto } from './dtos';
 import { PositionRepository } from './repositories';
 import { DepartmentsRepository } from '../departments/repositories';
 import { DesignationsRepository } from '../designations/repositories';
 import { LocationsRepository } from '../locations/repositories';
 import { UserRepository } from '../users/repositories';
+import { Position } from './entities';
 
 @Injectable()
 export class PositionsService {
@@ -31,7 +32,7 @@ export class PositionsService {
     const user = await this.usersRepository.get(userId);
     const payload = {
       budget: createPositionDto?.budget,
-      designazioneId: designation,
+      designationId: designation,
       departmentId: department,
       locationId: location,
       updatedAt: new Date(),
@@ -40,8 +41,23 @@ export class PositionsService {
     return this.positionRepository.store(payload);
   }
 
-  findAll() {
-    return this.positionRepository.getAll();
+  async findAll(projectId: number, query: FilterDto): Promise<ListPositionsResponseDto> {
+    if (query?.filterField && !query?.filterValue) {
+      throw new BadRequestException('Filter value is required');
+    }
+    if (query?.filterValue && !query?.filterField) {
+      throw new BadRequestException('Filter field is required');
+    }
+    query.page = query?.page || 1;
+    query.limit = query?.limit || 50;
+    const positions = await this.positionRepository.getAll(projectId, query);
+    return {
+      positions: positions[0],
+      page: query.page,
+      length: positions[0].length,
+      total: positions[1],
+      totalPages: Math.ceil(positions[1] / query.limit),
+    }
   }
 
   delete(id: number) {
