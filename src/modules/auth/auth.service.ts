@@ -32,7 +32,10 @@ export class AuthService {
   }
 
   async login(body: LoginpDto) {
-    const user = await this.userRepository.findByEmail(body?.email);
+    const user = await this.userRepository.findOne({
+      where: { email: body.email },
+      select: ['id', 'email', 'password'],
+    });
     if (!user) {
       throw new ConflictException('Email not found');
     }
